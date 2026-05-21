@@ -129,14 +129,14 @@ input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;hei
       <button onclick="togglePanel()" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 20px;color:var(--text-dim);font-family:var(--font-head);font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.06em;">✕ CERRAR</button>
     </div>
     <div style="background:var(--surface);border:1px solid rgba(245,166,35,0.3);border-radius:14px;padding:16px 20px;margin-bottom:28px;font-size:13px;color:var(--text-dim);">
-      ⚠️ <strong style="color:var(--white);">Tu precio</strong> es lo que cobras en Venezuela. <strong style="color:var(--white);">Precio ref.</strong> es el precio EcoFlow EE.UU. que el cliente ve tachado. Desmarca modelos que no tengas disponibles.
+      ⚠️ <strong style="color:var(--white);">Tu precio</strong> es lo que cobras en Venezuela. Desmarca modelos que no tengas disponibles.
     </div>
     <div id="panel-model-rows"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px;">
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px;">
         <div style="font-family:var(--font-head);font-weight:700;font-size:14px;color:var(--white);margin-bottom:14px;">💬 Botón CTA</div>
-        <div class="form-group"><label>Texto del botón</label><input type="text" id="cta-text-input" value="Quiero mi EcoFlow →"></div>
-        <div class="form-group" style="margin-top:12px;"><label>Link (WhatsApp, web, etc.)</label><input type="text" id="cta-link-input" value="#" placeholder="https://wa.me/1234567890"></div>
+        <div class="form-group"><label>Texto del botón</label><input type="text" id="cta-text-input" value="Contáctame por WhatsApp →"></div>
+        <div class="form-group" style="margin-top:12px;"><label>Link (WhatsApp, web, etc.)</label><input type="text" id="cta-link-input" value="https://wa.me/13057622014" placeholder="https://wa.me/1234567890"></div>
       </div>
       <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px;">
         <div style="font-family:var(--font-head);font-weight:700;font-size:14px;color:var(--white);margin-bottom:14px;">🏷️ Tu marca</div>
@@ -385,10 +385,7 @@ function renderCatalog(tierFilter) {
         <div class="fiche-tier tier-${tierClass}">${m.tier}</div>
         <div class="fiche-name">${m.name}</div>
         <div class="fiche-cap">${m.wh} Wh · ${m.outW}W salida AC</div>
-        <div>
-          <span class="fiche-price">$${m.myPrice.toLocaleString()}</span>
-          <span class="fiche-price-ref">$${m.refPrice.toLocaleString()} en EE.UU.</span>
-        </div>
+        <div><span class="fiche-price">$${m.myPrice.toLocaleString()}</span></div>
       </div>
       <div class="fiche-body">
         <div class="fiche-row"><span class="fiche-key">Capacidad</span><span class="fiche-val">${m.wh} Wh</span></div>
@@ -434,7 +431,7 @@ renderCatalog('all');
   <div class="container">
     <h2 class="cta-title">¿Listo para dejar de<br>depender del combustible?</h2>
     <p class="cta-sub">Las EcoFlow están disponibles para envío. Cotiza hoy y empieza a ahorrar desde el primer mes.</p>
-    <a href="#" class="btn-primary" id="cta-btn">Quiero mi EcoFlow →</a>
+    <a href="https://wa.me/13057622014" class="btn-primary" id="cta-btn">Contáctame por WhatsApp →</a>
   </div>
 </section>
 
@@ -565,7 +562,7 @@ function calculate(){
       <div class="model-cap">${m.wh} Wh · ${m.outW}W salida · ${m.tier}</div>
       <div class="model-hours">${hrs}</div>
       <div class="model-hours-label">horas continuas con tus aparatos</div>
-      <div class="model-price">Tu precio: <strong>$${m.myPrice}</strong> <span style="color:var(--text-dim);text-decoration:line-through;font-size:12px;">$${m.refPrice} en EE.UU.</span></div>
+      <div class="model-price">Tu precio: <strong>$${m.myPrice.toLocaleString()}</strong></div>
       <div class="model-payback">⏱ Se paga solo en ~${paybackMonths} ${paybackMonths===1?'mes':'meses'} vs. gasolina</div>
       <div style="margin-top:14px;border-top:1px solid var(--border);padding-top:12px;">
         <div style="font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Tiempos de recarga</div>
@@ -642,22 +639,17 @@ function renderPanelRows(){
           <input type="checkbox" id="active-${i}" ${m.active?'checked':''} onchange="MODELS_BASE[${i}].active=this.checked" style="width:16px;height:16px;accent-color:var(--green);">
           <span style="font-size:12px;color:var(--text-dim);">Mostrar</span></label>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="display:grid;grid-template-columns:1fr;gap:12px;">
         <div class="form-group"><label>Tu precio (lo que cobras tú)</label>
           <input type="number" id="myprice-${i}" value="${m.myPrice}" min="1" step="1"
             style="background:var(--dark);border:1px solid var(--green);border-radius:8px;padding:10px 14px;color:var(--green);font-family:var(--font-head);font-weight:700;font-size:16px;outline:none;width:100%;"></div>
-        <div class="form-group"><label>Precio ref. EE.UU. (tachado)</label>
-          <input type="number" id="refprice-${i}" value="${m.refPrice}" min="1" step="1"
-            style="background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:10px 14px;color:var(--text-dim);font-family:var(--font-body);font-size:15px;outline:none;width:100%;"></div>
       </div>
     </div>`).join('');
 }
 function applyPanel(){
   MODELS_BASE.forEach((m,i)=>{
     const myP=parseFloat(document.getElementById('myprice-'+i).value);
-    const refP=parseFloat(document.getElementById('refprice-'+i).value);
     if(!isNaN(myP))m.myPrice=myP;
-    if(!isNaN(refP))m.refPrice=refP;
     m.active=document.getElementById('active-'+i).checked;
   });
   const ctaText=document.getElementById('cta-text-input').value;
